@@ -49,7 +49,7 @@ gulp.task('ng_annotate', function (done) {
 
 // js代码压缩混淆
 gulp.task('js-uglify', function () {
-  gulp.src(['./www/dist/js/app.js', './www/dist/js/basic.js'])
+  gulp.src('./www/dist/js/*.js') // 如果想压缩某几个js: .src(['./www/dist/js/app.js', './www/dist/js/basic.js', ...])
     .pipe(uglify({
       compress: {
         drop_console: true,  // 过滤 console
