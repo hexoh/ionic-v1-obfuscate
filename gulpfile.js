@@ -20,7 +20,7 @@ gulp.task('serve:before', ['default', 'watch']);
 
 gulp.task('default', ['sass', 'inject_templates', 'templatecache', 'ng_annotate', 'useref']);
 
-gulp.task('sass', function(done) {
+gulp.task('sass', function (done) {
   gulp.src('./scss/ionic.app.scss')
     .pipe(sass())
     .on('error', sass.logError)
@@ -35,29 +35,28 @@ gulp.task('sass', function(done) {
 
 gulp.task('templatecache', function (done) {
   gulp.src('./www/templates/**/*.html')
-    .pipe(templateCache({root:'templates', standalone:true}))
+    .pipe(templateCache({ root: 'templates', standalone: true }))
     .pipe(gulp.dest('./www/js'))
     .on('end', done);
 });
 
 gulp.task('ng_annotate', function (done) {
   gulp.src('./www/js/*.js')
-    .pipe(ngAnnotate({single_quotes: true}))
+    .pipe(ngAnnotate({ single_quotes: true }))
     .pipe(gulp.dest('./www/dist/js/app'))
     .on('end', done);
 });
 
 // js代码压缩混淆
 gulp.task('js-uglify', function () {
-  gulp.src('./www/dist/js/*.js')
-      .pipe(uglify({
-        compress: {
-            warnings: false,
-            drop_console: true,  // 过滤 console
-            drop_debugger: true  // 过滤 debugger
-        }
-      }))
-      .pipe(gulp.dest('./www/dist/js'));
+  gulp.src(['./www/dist/js/app.js', './www/dist/js/basic.js'])
+    .pipe(uglify({
+      compress: {
+        drop_console: true,  // 过滤 console
+        drop_debugger: true  // 过滤 debugger
+      }
+    }))
+    .pipe(gulp.dest('./www/dist/js'));
 });
 
 gulp.task('useref', function (done) {
@@ -73,12 +72,12 @@ gulp.task('useref', function (done) {
 // 添加templates.js的引用到index.html
 gulp.task('inject_templates', function (done) {
   gulp.src('./www/index.html')
-      .pipe(inject(gulp.src('./www/js/templates.js', {read: false}), {relative: true}))
-      .pipe(gulp.dest('./www'))
-      .on('end', done);
+    .pipe(inject(gulp.src('./www/js/templates.js', { read: false }), { relative: true }))
+    .pipe(gulp.dest('./www'))
+    .on('end', done);
 });
 
-gulp.task('watch', ['sass'], function() {
+gulp.task('watch', ['sass'], function () {
   gulp.watch(paths.sass, ['sass']);
   gulp.watch(paths.templatecache, ['templatecache']);
   gulp.watch(paths.ng_annotate, ['ng_annotate']);
