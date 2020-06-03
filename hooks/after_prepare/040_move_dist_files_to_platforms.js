@@ -20,35 +20,42 @@ var run = function () {
   console.log("Moving dist files to iOS platform start");
   // ios platform exist
   if (fs.existsSync(iosPlatformsPath)) {
-    mv(iosPlatformsDir_dist_css, iosPlatformsDir_www_css, { mkdirp: true }, function (err) {
-      if (typeof err != 'undefined') {
-        console.log("err");
-        console.log(err);
-        console.log("ERROR when moving CSS folder to iOS platform");
-      } else {
-        console.log("CSS folder moved OK to iOS platform");
-      }
-    });
+    if (fs.existsSync(iosPlatformsDir_dist_css)) {
+      mv(iosPlatformsDir_dist_css, iosPlatformsDir_www_css, { mkdirp: true }, function (err) {
+        if (typeof err != 'undefined') {
+          console.log("err");
+          console.log(err);
+          console.log("ERROR when moving CSS folder to iOS platform");
+        } else {
+          console.log("CSS folder moved OK to iOS platform");
+        }
+      });
+    }
 
-    mv(iosPlatformsDir_dist_js, iosPlatformsDir_www_js, { mkdirp: true }, function (err) {
-      if (typeof err != 'undefined') {
-        console.log("err");
-        console.log(err);
-        console.log("ERROR when moving JS folder to iOS platform");
-      } else {
-        console.log("JS folder moved OK to iOS platform");
-      }
-    });
+    if (fs.existsSync(iosPlatformsDir_dist_js)) {
+      mv(iosPlatformsDir_dist_js, iosPlatformsDir_www_js, { mkdirp: true }, function (err) {
+        if (typeof err != 'undefined') {
+          console.log("err");
+          console.log(err);
+          console.log("ERROR when moving JS folder to iOS platform");
+        } else {
+          console.log("JS folder moved OK to iOS platform");
+        }
+      });
+    }
 
-    mv(iosPlatformsDir_dist_index, iosPlatformsDir_www_index, function (err) {
-      if (typeof err != 'undefined') {
-        console.log("err");
-        console.log(err);
-        console.log("ERROR when moving index.html file to iOS platform");
-      } else {
-        console.log("index.html file moved OK to iOS platform");
-      }
-    });
+    if (fs.existsSync(iosPlatformsDir_dist_index)) {
+      mv(iosPlatformsDir_dist_index, iosPlatformsDir_www_index, function (err) {
+        if (typeof err != 'undefined') {
+          console.log("err");
+          console.log(err);
+          console.log("ERROR when moving index.html file to iOS platform");
+        } else {
+          console.log("index.html file moved OK to iOS platform");
+        }
+      });
+    }
+
     console.log("Moving dist files to iOS platform end");
   } else {
     console.log('iOS platform not exist');
@@ -68,35 +75,42 @@ var run = function () {
 
   console.log("Moving dist files to Android platform start");
   if (fs.existsSync(androidPlatformsPath)) {
-    mv(androidPlatformsDir_dist_css, androidPlatformsDir_www_css, { mkdirp: true }, function (err) {
-      if (typeof err != 'undefined') {
-        console.log("err");
-        console.log(err);
-        console.log("ERROR when moving CSS folder to Android platform");
-      } else {
-        console.log("CSS folder moved OK to Android platform");
-      }
-    });
+    if (fs.existsSync(androidPlatformsDir_dist_css)) {
+      mv(androidPlatformsDir_dist_css, androidPlatformsDir_www_css, { mkdirp: true }, function (err) {
+        if (typeof err != 'undefined') {
+          console.log("err");
+          console.log(err);
+          console.log("ERROR when moving CSS folder to Android platform");
+        } else {
+          console.log("CSS folder moved OK to Android platform");
+        }
+      });
+    }
 
-    mv(androidPlatformsDir_dist_js, androidPlatformsDir_www_js, { mkdirp: true }, function (err) {
-      if (typeof err != 'undefined') {
-        console.log("err");
-        console.log(err);
-        console.log("ERROR when moving JS folder to Android platform");
-      } else {
-        console.log("JS folder moved OK to Android platform");
-      }
-    });
+    if (fs.existsSync(androidPlatformsDir_dist_js)) {
+      mv(androidPlatformsDir_dist_js, androidPlatformsDir_www_js, { mkdirp: true }, function (err) {
+        if (typeof err != 'undefined') {
+          console.log("err");
+          console.log(err);
+          console.log("ERROR when moving JS folder to Android platform");
+        } else {
+          console.log("JS folder moved OK to Android platform");
+        }
+      });
+    }
 
-    mv(androidPlatformsDir_dist_index, androidPlatformsDir_www_index, function (err) {
-      if (typeof err != 'undefined') {
-        console.log("err");
-        console.log(err);
-        console.log("ERROR when moving index.html file to Android platform");
-      } else {
-        console.log("index.html file moved OK to Android platform");
-      }
-    });
+    if (fs.existsSync(androidPlatformsDir_dist_index)) {
+      mv(androidPlatformsDir_dist_index, androidPlatformsDir_www_index, function (err) {
+        if (typeof err != 'undefined') {
+          console.log("err");
+          console.log(err);
+          console.log("ERROR when moving index.html file to Android platform");
+        } else {
+          console.log("index.html file moved OK to Android platform");
+        }
+      });
+    }
+
     console.log("Moving dist files to Android platform end");
   } else {
     console.log('Android platform not exist');

@@ -32,8 +32,8 @@ var recursiveFolderSearch = hookConfig.recursiveFolderSearch;
 // set this to false to manually indicate the folders to process
 // var foldersToProcess = hookConfig.foldersToProcess; 
 var foldersToProcess = [ // add other www folders in here if needed (ex. js/controllers)
-    'dist_js',
-    'dist_css'
+    'js',
+    'css'
 ];
 
 if (!isRelease) {
