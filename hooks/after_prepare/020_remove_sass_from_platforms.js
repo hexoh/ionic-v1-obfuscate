@@ -21,14 +21,22 @@ var deleteFolderRecursive = function (removePath) {
   }
 };
 
-var iosPlatformsDir = path.resolve(__dirname, '../../platforms/ios/www/lib/ionic/scss');
-var androidPlatformsDir = path.resolve(__dirname, '../../platforms/android/assets/www/lib/ionic/scss');
+/**
+ * Run romove sass from platforms
+ */
+var run = function () {
+  var iosPlatformsDir = path.resolve(__dirname, '../../platforms/ios/www/lib/ionic/scss');
+  var androidPlatformsDir = path.resolve(__dirname, '../../platforms/android/assets/www/lib/ionic/scss');
 
-// androidPlatformsDir not exist
-if (fs.existsSync(androidPlatformsDir)) {
-  // Cordova new version generation path changed
-  androidPlatformsDir = path.resolve(__dirname, '../../platforms/android/app/src/main/assets/www/lib/ionic/scss');
-}
+  // androidPlatformsDir not exist
+  if (!fs.existsSync(androidPlatformsDir)) {
+    // Cordova new version generation path changed
+    androidPlatformsDir = path.resolve(__dirname, '../../platforms/android/app/src/main/assets/www/lib/ionic/scss');
+  }
 
-deleteFolderRecursive(iosPlatformsDir);
-deleteFolderRecursive(androidPlatformsDir);
+  deleteFolderRecursive(iosPlatformsDir);
+  deleteFolderRecursive(androidPlatformsDir);
+};
+
+// run remove sass
+run();
