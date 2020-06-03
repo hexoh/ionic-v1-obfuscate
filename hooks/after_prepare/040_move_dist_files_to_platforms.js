@@ -10,11 +10,11 @@ var mv = require('mv');
 
 var run = function () {
   var iosPlatformsPath = path.resolve(__dirname, '../../platforms/ios');
-  var iosPlatformsDir_dist_css = path.resolve(__dirname, iosPlatformsPath + '/www/dist/dist_css');
-  var iosPlatformsDir_dist_js = path.resolve(__dirname, iosPlatformsPath + '/www/dist/dist_js');
+  var iosPlatformsDir_dist_css = path.resolve(__dirname, iosPlatformsPath + '/www/dist/css');
+  var iosPlatformsDir_dist_js = path.resolve(__dirname, iosPlatformsPath + '/www/dist/js');
   var iosPlatformsDir_dist_index = path.resolve(__dirname, iosPlatformsPath + '/www/dist/index.html');
-  var iosPlatformsDir_www_css = path.resolve(__dirname, iosPlatformsPath + '/www/dist_css');
-  var iosPlatformsDir_www_js = path.resolve(__dirname, iosPlatformsPath + '/www/dist_js');
+  var iosPlatformsDir_www_css = path.resolve(__dirname, iosPlatformsPath + '/www/css');
+  var iosPlatformsDir_www_js = path.resolve(__dirname, iosPlatformsPath + '/www/js');
   var iosPlatformsDir_www_index = path.resolve(__dirname, iosPlatformsPath + '/www/index.html');
 
   console.log("Moving dist files to iOS platform start");
@@ -59,11 +59,11 @@ var run = function () {
     // new android path
     androidPlatformsPath = path.resolve(__dirname, '../../platforms/android/app/src/main');
   }
-  var androidPlatformsDir_dist_css = path.resolve(__dirname, androidPlatformsPath + '/assets/www/dist/dist_css');
-  var androidPlatformsDir_dist_js = path.resolve(__dirname, androidPlatformsPath + '/assets/www/dist/dist_js');
+  var androidPlatformsDir_dist_css = path.resolve(__dirname, androidPlatformsPath + '/assets/www/dist/css');
+  var androidPlatformsDir_dist_js = path.resolve(__dirname, androidPlatformsPath + '/assets/www/dist/js');
   var androidPlatformsDir_dist_index = path.resolve(__dirname, androidPlatformsPath + '/assets/www/dist/index.html');
-  var androidPlatformsDir_www_css = path.resolve(__dirname, androidPlatformsPath + '/assets/www/dist_css');
-  var androidPlatformsDir_www_js = path.resolve(__dirname, androidPlatformsPath + '/assets/www/dist_js');
+  var androidPlatformsDir_www_css = path.resolve(__dirname, androidPlatformsPath + '/assets/www/css');
+  var androidPlatformsDir_www_js = path.resolve(__dirname, androidPlatformsPath + '/assets/www/js');
   var androidPlatformsDir_www_index = path.resolve(__dirname, androidPlatformsPath + '/assets/www/index.html');
 
   console.log("Moving dist files to Android platform start");
