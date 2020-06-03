@@ -7,11 +7,11 @@
 var fs = require('fs');
 var path = require('path');
 
-var deleteFolderRecursive = function(removePath) {
-  if( fs.existsSync(removePath) ) {
-    fs.readdirSync(removePath).forEach(function(file,index){
+var deleteFolderRecursive = function (removePath) {
+  if (fs.existsSync(removePath)) {
+    fs.readdirSync(removePath).forEach(function (file, index) {
       var curPath = path.join(removePath, file);
-      if(fs.lstatSync(curPath).isDirectory()) { // recurse
+      if (fs.lstatSync(curPath).isDirectory()) { // recurse
         deleteFolderRecursive(curPath);
       } else { // delete file
         fs.unlinkSync(curPath);
@@ -21,9 +21,14 @@ var deleteFolderRecursive = function(removePath) {
   }
 };
 
-var iosPlatformsDir_dist = path.resolve(__dirname, '../../platforms/ios/www/dist');
-var androidPlatformsDir_dist = path.resolve(__dirname, '../../platforms/android/assets/www/dist');
+var run = function () {
+  var iosPlatformsDir_dist = path.resolve(__dirname, '../../platforms/ios/www/dist');
+  var androidPlatformsDir_dist = path.resolve(__dirname, '../../platforms/android/assets/www/dist');
+  if (!fs.existsSync(androidPlatformsDir_dist)) {
+    androidPlatformsDir_dist = path.resolve(__dirname, '../../platforms/android/app/src/main/assets/www/dist');
+  }
+  deleteFolderRecursive(iosPlatformsDir_dist);
+  deleteFolderRecursive(androidPlatformsDir_dist);
+};
 
-
-deleteFolderRecursive(iosPlatformsDir_dist);
-deleteFolderRecursive(androidPlatformsDir_dist);
+run();
