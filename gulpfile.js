@@ -47,13 +47,13 @@ gulp.task('ng_annotate', function (done) {
     .on('end', done);
 });
 
-// js代码压缩混淆
+// js uglify
 gulp.task('js-uglify', function () {
-  gulp.src('./www/dist/js/*.js') // 如果想压缩某几个js: .src(['./www/dist/js/app.js', './www/dist/js/basic.js', ...])
+  gulp.src('./www/dist/js/*.js') // if you want to uglify a certain javascript file, please use: .src(['./www/dist/js/app.js', './www/dist/js/basic.js', ...])
     .pipe(uglify({
       compress: {
-        drop_console: true,  // 过滤 console
-        drop_debugger: true  // 过滤 debugger
+        drop_console: true,  // delete console
+        drop_debugger: true  // delete debugger
       }
     }))
     .pipe(gulp.dest('./www/dist/js'));
@@ -69,7 +69,7 @@ gulp.task('useref', function (done) {
     .on('end', done);
 });
 
-// 添加templates.js的引用到index.html
+// add templates.js to index.html
 gulp.task('inject_templates', function (done) {
   gulp.src('./www/index.html')
     .pipe(inject(gulp.src('./www/js/templates.js', { read: false }), { relative: true }))
