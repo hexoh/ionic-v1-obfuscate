@@ -100,7 +100,6 @@ function processFiles(dir) {
             fs.stat(file, function (err, stat) {
                 if (stat.isFile()) {
                     compress(file);
-
                     return;
                 }
                 if (recursiveFolderSearch && stat.isDirectory()) {
