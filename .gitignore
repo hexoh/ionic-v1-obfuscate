@@ -28,4 +28,5 @@ package-lock.json
 /node_modules
 /platforms
 /resources
+/plugins
 dist
