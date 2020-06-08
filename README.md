@@ -40,12 +40,12 @@ If you  run `ionic serve`, your gulp doesn't work. Please add the following code
    npm install async --save-dev
    ```
 
-2. Copy the following cordova hooks
+2. Copy the following cordova hooks.
 
-   * In **_before_prepare_** folder copy these [files](https://gist.github.com/hexoh/ef8f28d17124290bdba62b29ff6b9951)
-   * If you are using Linux or Mac, give execution permissions to all of them, run `chmod +x file_name`
+   * In **_before_prepare_** folder copy these [files](https://gist.github.com/hexoh/ef8f28d17124290bdba62b29ff6b9951).
+   * If you are using Linux or Mac, give execution permissions to all of them, run `chmod +x file_name`.
 
-3. We are ready to test javascript linting, run this command and you will see that jshint is working
+3. We are ready to test javascript linting, run this command and you will see that jshint is working.
 
    ```shell
    ionic build ios [android]
@@ -53,23 +53,23 @@ If you  run `ionic serve`, your gulp doesn't work. Please add the following code
 
 ### HTML templates transformation
 
-Part of the obfuscation is transforming all the html templates in angular js templates (compressed inside a javascript file)
+Part of the obfuscation is transforming all the html templates in angular js templates (compressed inside a javascript file).
 
-1. For this we are going to use **_gulp-angular-templatecache_**. Run this command to install the npm package
+1. For this we are going to use **_gulp-angular-templatecache_**. Run this command to install the npm package.
 
    ```shell
    npm install gulp-angular-templatecache --save-dev
    ```
 
-2. Add the following lines to **_gulpfile.js_**
+2. Add the following lines to **_gulpfile.js_**.
 
-   * require **_gulp-angular-templatecache_**
+   * require **_gulp-angular-templatecache_**.
 
       ```js
       var templateCache = require('gulp-angular-templatecache');
       ```
 
-   * add `templatecache` in **_paths_**
+   * add `templatecache` in **_paths_**.
 
       ```js
       var paths = {
@@ -78,7 +78,7 @@ Part of the obfuscation is transforming all the html templates in angular js tem
       };
       ```
 
-   * add `templatecache task`.The **_root_** parameter refers to the root directory node of your html file. Adding this parameter will automatically add the root node before the generated file path.
+   * add `templatecache` task.The **_root_** parameter refers to the root directory node of your html file. Adding this parameter will automatically add the root node before the generated file path.
 
       ```js
       gulp.task('templatecache', function (done) {
@@ -90,7 +90,20 @@ Part of the obfuscation is transforming all the html templates in angular js tem
       });
       ```
 
-   * If your project have `ionic.project` file, also you need to add this to **_ionic.project_**
+   * add `templatecache` task in **_default task_** and **_watch task_**.
+
+      ```js
+      gulp.task('default', ['sass', 'templatecache']);
+      ```
+
+      ```js
+      gulp.task('watch', function() {
+        gulp.watch(paths.sass, ['sass']);
+        gulp.watch(paths.templatecache, ['templatecache']);
+      });
+      ```
+
+3. If your project have `ionic.project` file, also you need to add this to **_ionic.project_**.
 
       ```js
       "gulpStartupTasks": [
@@ -99,3 +112,218 @@ Part of the obfuscation is transforming all the html templates in angular js tem
         "watch"
       ]
       ```
+
+4. Add **_templates_** module in your **_app.js_**.
+
+   ```js
+   angular.module('starter', ['ionic', 'starter.controllers', 'templates'])
+   ```
+
+5. Add reference to **_templates.js_** file in your **_index.html_**.
+
+   ```html
+   <script src="js/templates.js"></script>
+   ```
+
+6. Run
+
+   This will add a **_templates.js_** file inside **_www/js_** with all the html templates as angular js templates.
+
+   ```shell
+   ionic serve
+
+   or
+
+   gulp templatecache
+   ```
+
+### Enable ng-strict-di
+
+Before minifying we need to enable angular strict dependency injection (for more information about why you need this, read [here](https://github.com/olov/ng-annotate#highly-recommended-enable-ng-strict-di-in-your-minified-builds). This will save us from breaking angular dependency injection when minifying.
+
+1. For that we are going to use **_gulp-ng-annotate_**. Run this command to install the npm package.
+
+   ```shell
+   npm install gulp-ng-annotate --save-dev
+   ```
+
+2. Add the following lines to **_gulpfile.js_**.
+
+   * require **_gulp-ng-annotate_**.
+
+      ```js
+      var ngAnnotate = require('gulp-ng-annotate');
+      ```
+
+   * add `ng_annotate` in **_paths_**.
+
+      ```js
+      var paths = {
+        sass: ['./scss/**/*.scss'],
+        templatecache: ['./www/templates/**/*.html'], // add templatecache
+        ng_annotate: ['./www/js/*.js']
+      };
+      ```
+
+   * add `ng_annotate` task.
+
+      ```js
+      gulp.task('ng_annotate', function (done) {
+        console.log('gulp ng_annotate start: add dependency injection annotations');
+        gulp.src('./www/js/*.js')
+          .pipe(ngAnnotate({ single_quotes: true }))
+          .pipe(gulp.dest('./www/dist/js/app'))
+          .on('end', done);
+      });
+      ```
+
+   * add `ng_annotate` task in **_default task_** and **_watch task_**.
+
+      ```js
+      gulp.task('default', ['sass', 'templatecache', 'ng_annotate']);
+      ```
+
+      ```js
+      gulp.task('watch', function() {
+        gulp.watch(paths.sass, ['sass']);
+        gulp.watch(paths.templatecache, ['templatecache']);
+        gulp.watch(paths.ng_annotate, ['ng_annotate']);
+      });
+      ```
+
+3. If your project have `ionic.project` file, also you need to add this to **_ionic.project_**.
+
+      ```js
+      "gulpStartupTasks": [
+        "sass",
+        "templatecache",
+        "ng_annotate",
+        "watch"
+      ]
+      ```
+
+4. Change the path of our angular js files in the **_index.html_** as follows.
+
+   ```html
+   <script src="dist/js/app/app.js"></script>
+   ```
+
+5. Add `ng-strict-di` directive in `ng-app` tag (inside **_index.html_**).
+
+   ```html
+   <body ng-app="your-app" ng-strict-di>
+   ```
+
+6. Run
+
+   This will create a **_dist_** folder inside **_www_** folder with all our js files with strict dependency injection fixed.
+
+   ```shell
+   ionic serve
+
+   or
+
+   gulp ng_annotate
+   ```
+
+### Concatenate js and css files
+
+1. For the concatenation of files we are going to use gulp-useref. Run this command to install the npm package. Install version 2.1.0 here, because the function method of the higher version has changed.
+
+   ```shell
+   npm install gulp-useref@2.1.0 --save-dev
+   ```
+
+2. Add the following lines to **_gulpfile.js_**.
+
+   * require **_gulp-useref_**.
+
+      ```js
+      var useref = require('gulp-useref');
+      ```
+
+   * add `useref` in **_paths_**.
+
+      ```js
+      var paths = {
+        sass: ['./scss/**/*.scss'],
+        templatecache: ['./www/templates/**/*.html'], // add templatecache
+        ng_annotate: ['./www/js/*.js'],
+        useref: ['./www/*.html'],
+      };
+      ```
+
+   * add `useref` task.
+
+      ```js
+      gulp.task('useref', function (done) {
+        console.log('gulp useref start: handle file concatenation');
+        var assets = useref.assets();
+        gulp.src('./www/*.html')
+          .pipe(assets)
+          .pipe(assets.restore())
+          .pipe(useref())
+          .pipe(gulp.dest('./www/dist'))
+          .on('end', done);
+      });
+      ```
+
+   * add `useref` task in **_default task_** and **_watch task_**.
+
+      ```js
+      gulp.task('default', ['sass', 'templatecache', 'ng_annotate', 'useref']);
+      ```
+
+      ```js
+      gulp.task('watch', function() {
+        gulp.watch(paths.sass, ['sass']);
+        gulp.watch(paths.templatecache, ['templatecache']);
+        gulp.watch(paths.ng_annotate, ['ng_annotate']);
+        gulp.watch(paths.useref, ['useref']);
+      });
+      ```
+
+3. If your project have `ionic.project` file, also you need to add this to **_ionic.project_**.
+
+      ```js
+      "gulpStartupTasks": [
+        "sass",
+        "templatecache",
+        "ng_annotate",
+        "useref",
+        "watch"
+      ]
+      ```
+
+4. Add the following to **_index.html_** to bundle css and js as you want.
+
+   ```html
+   <!-- build:css dist_css/styles.css -->
+   <link href="css/ionic.app.css" rel="stylesheet">
+   <!-- endbuild -->
+   ```
+
+   ```html
+   <!-- build:js dist_js/app.js -->
+   <script src="dist/js/app/app.js"></script>
+   <script src="dist/js/app/controllers.js"></script>
+   <!-- endbuild -->
+   ```
+
+   Note: if you require an external script/file don’t include it inside a bundle. For example:
+
+   ```html
+   <script src="http://maps.google.com/maps/api/js"></script>
+   ```
+
+5. Run
+
+   This will create the bundled files inside you **_www/dist_** folder also a new **_index.html_** with the new path to the bundled files.
+
+   ```shell
+   ionic serve
+
+   or
+
+   gulp useref
+   ```
