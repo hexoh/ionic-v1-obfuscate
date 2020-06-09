@@ -483,3 +483,69 @@ Because the gulp task is executed asynchronously, but the gulp task we created n
    ```shell
    ionic build ios [android]
    ```
+
+### Another minify and obfuscate plugin
+
+If your project is a web project and you do not use Cordova to package your project, you can use the `gulp-uglify` plugin to minify and obfuscate. 
+
+You can choose one of `gulp-uglify` and `cordova-uglify`.
+
+1. For that we are going to use **_gulp-uglify_** . Run this command to install the npm package.
+
+   ```shell
+   npm install gulp-uglify --save-dev
+   ```
+
+2. Add the following lines to **_gulpfile.js_**.
+
+   * require **_gulp-uglify_**.
+
+      ```js
+      var uglify = require('gulp-uglify');
+      ```
+
+   * add `js_uglify` task.
+
+      ```js
+      gulp.task('js_uglify', function () {
+        console.log('gulp js_uglify start: uglify js file');
+        gulp.src('./www/dist/js/*.js') // if you want to uglify a certain javascript file, please use: .src(['./www/dist/js/app.js', './www/dist/js/basic.js', ...])
+        .pipe(uglify({
+          compress: {
+            drop_console: true,  // delete console
+            drop_debugger: true  // delete debugger
+          }
+        }))
+        .pipe(gulp.dest('./www/dist/js'));
+      });
+      ```
+
+   * add `js_uglify` task in **_default task_**.
+
+      ```js
+      gulp.task('default', ['sass', 'templatecache', 'ng_annotate', 'inject_templates', 'useref', 'js_uglify']);
+      ```
+
+3. If your project have `ionic.project` file, also you need to add this to **_ionic.project_**.
+
+      ```js
+      "gulpStartupTasks": [
+        "sass",
+        "templatecache",
+        "ng_annotate",
+        "inject_templates",
+        "useref",
+        "js_uglify",
+        "watch"
+      ]
+      ```
+
+4. Run
+
+   ```shell
+   ionic serve
+
+   or
+
+   gulp js_uglify
+   ```
