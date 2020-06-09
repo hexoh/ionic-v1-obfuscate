@@ -42,8 +42,12 @@ If you  run `ionic serve`, your gulp doesn't work. Please add the following code
 
 2. Copy the following cordova hooks.
 
-   * In **_before_prepare_** folder copy these [files](https://gist.github.com/hexoh/ef8f28d17124290bdba62b29ff6b9951).
-   * If you are using Linux or Mac, give execution permissions to all of them, run `chmod +x file_name`.
+   * In **_before_prepare_** folder copy [these](https://gist.github.com/hexoh/ef8f28d17124290bdba62b29ff6b9951) files.
+   * If you are using Linux or Mac, give execution permissions to all of them, run
+
+      ```shell
+      chmod +x file_name
+      ```
 
 3. We are ready to test javascript linting, run this command and you will see that jshint is working.
 
@@ -454,4 +458,28 @@ Because the gulp task is executed asynchronously, but the gulp task we created n
    or
 
    gulp default
+   ```
+
+### Uglify, minify and obfuscate
+
+1. For this procedure we are going to use these npm packages. Run these commands to install them.
+
+   ```shell
+   npm install cordova-uglify --save-dev
+   npm install mv --save-dev
+   ```
+
+2. Copy the following cordova hooks.
+
+   * In **_after_prepare_** folder copy [these](https://gist.github.com/hexoh/aec9c0e18031360ffd7ad517ad119659) files.
+   * If you are using Linux or Mac, give execution permissions to all of them, run
+
+      ```shell
+      chmod +x file_name
+      ```
+
+3. We are ready to get the obfuscated/minified/compressed apk, run this command and you will see your production ready app
+
+   ```shell
+   ionic build ios [android]
    ```
