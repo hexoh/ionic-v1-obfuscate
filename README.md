@@ -486,7 +486,7 @@ Because the gulp task is executed asynchronously, but the gulp task we created n
 
 ### Another minify and obfuscate plugin
 
-If your project is a web project and you do not use Cordova to package your project, you can use the `gulp-uglify` plugin to minify and obfuscate. 
+If your project is a web project and you do not use Cordova to package your project, you can use the `gulp-uglify` plugin to minify and obfuscate.
 
 You can choose one of `gulp-uglify` and `cordova-uglify`.
 
