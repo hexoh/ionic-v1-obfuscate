@@ -478,7 +478,7 @@ Because the gulp task is executed asynchronously, but the gulp task we created n
       chmod +x file_name
       ```
 
-3. We are ready to get the obfuscated/minified/compressed apk, run this command and you will see your production ready app
+3. We are ready to get the obfuscated/minified/compressed apk, run this command and you will see your production ready app.
 
    ```shell
    ionic build ios [android]
