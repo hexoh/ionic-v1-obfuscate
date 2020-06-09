@@ -394,4 +394,64 @@ In order to better automate packaging and deployment, we can use the gulp plugin
       ]
       ```
 
-4. Add the following to **_index.html_** to bundle css and js as you want.
+4. Modify the reference to `js` in **_index.html_**.
+
+   ```html
+   <!-- build:js js/app.js -->  
+   <!-- inject:app:js -->
+   <!-- endinject -->
+   <!-- endbuild -->
+
+   <!-- build:js js/basic.js -->  
+   <!-- inject:js -->
+   <!-- endinject -->
+   <!-- endbuild -->
+   ```
+
+5. Run
+
+   ```shell
+   ionic serve
+
+   or
+
+   gulp inject_templates
+   ```
+
+   The `js` file will be automatically added to the tag `<!-- inject:js -->` And within `<!-- endinject -->`.
+
+### Run gulp tasks synchronously
+
+Because the gulp task is executed asynchronously, but the gulp task we created needs to be executed synchronously in order, otherwise an error will occur.
+
+1. For that we are going to use **_run-sequence_** . Run this command to install the npm package.
+
+   ```shell
+   npm install run-sequence --save-dev
+   ```
+
+2. Add the following lines to **_gulpfile.js_**.
+
+   * require **_sequence_**.
+
+      ```js
+      var sequence = require('run-sequence');
+      ```
+
+   * Modify the **_default_** task.
+
+      ```js
+      gulp.task('default', function (done) {
+        sequence('sass', 'templatecache', 'ng_annotate', 'inject_templates', 'useref', done);
+      });
+      ```
+
+3. Run
+
+   ```shell
+   ionic serve
+
+   or
+
+   gulp default
+   ```
