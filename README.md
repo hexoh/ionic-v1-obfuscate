@@ -17,7 +17,7 @@ We will minified and obfuscated our project in the following steps:
 
 For all the previous task we are going to use a mixture between **_gulp tasks_** and **_cordova hooks_**. Gulp tasks will be “running” all the time after you run `ionic serve`. Cordova hooks will run each time you build or run your project with `ionic build ios [android]` or `ionic run android [ios]`.
 
-If you  run `ionic serve`, your gulp doesn't work. Please add the following code to your **`gulpfile.js`** file:
+If you  run `ionic serve`, your gulp doesn't work. Please add the following code to your **_gulpfile.js_** file:
 
    ```js
    gulp.task('serve:before', ['default']);  // ionic cli v2 use this code
@@ -206,6 +206,9 @@ Before minifying we need to enable angular strict dependency injection (for more
 
    ```html
    <script src="dist/js/app/app.js"></script>
+   <script src="dist/js/app/controllers.js"></script>
+   <script src="dist/js/app/services.js"></script>
+   <script src="dist/js/app/templates.js"></script>
    ```
 
 5. Add `ng-strict-di` directive in `ng-app` tag (inside **_index.html_**).
@@ -298,15 +301,17 @@ Before minifying we need to enable angular strict dependency injection (for more
 4. Add the following to **_index.html_** to bundle css and js as you want.
 
    ```html
-   <!-- build:css dist_css/styles.css -->
+   <!-- build:css css/styles.css -->
    <link href="css/ionic.app.css" rel="stylesheet">
    <!-- endbuild -->
    ```
 
    ```html
-   <!-- build:js dist_js/app.js -->
+   <!-- build:js js/app.js -->
    <script src="dist/js/app/app.js"></script>
    <script src="dist/js/app/controllers.js"></script>
+   <script src="dist/js/app/services.js"></script>
+   <script src="dist/js/app/templates.js"></script>
    <!-- endbuild -->
    ```
 
@@ -327,3 +332,66 @@ Before minifying we need to enable angular strict dependency injection (for more
 
    gulp useref
    ```
+
+### Automatically add files to html
+
+In order to better automate packaging and deployment, we can use the gulp plugin to automatically add the `js` file to **_index.html_** without requiring us to manually add it.
+
+1. For that we are going to use **_gulp-inject_** . Run this command to install the npm package.
+
+   ```shell
+   npm install gulp-inject --save-dev
+   ```
+
+2. Add the following lines to **_gulpfile.js_**.
+
+   * require **_gulp-inject_**.
+
+      ```js
+      var inject = require('gulp-inject');
+      ```
+
+   * add `inject_templates` in **_paths_**.
+
+      ```js
+      var paths = {
+        sass: ['./scss/**/*.scss'],
+        templatecache: ['./www/templates/**/*.html'], // add templatecache
+        ng_annotate: ['./www/js/*.js'],
+        inject_templates: ['./www/index.html']
+      };
+      ```
+
+   * add `inject_templates` task.
+
+      ```js
+      gulp.task('inject_templates', function (done) {
+        console.log('gulp inject_templates start: auto add file in index.html');
+        gulp.src('./www/index.html')
+         .pipe(inject(gulp.src('./www/dist/js/app/app.js', { read: false }), { relative: true, starttag: '<!-- inject:app:{{ext}} -->' }))
+         .pipe(inject(gulp.src(['./www/dist/js/app/controllers.js', './www/dist/js/app/services.js', './www/dist/js/app/templates.js'], { read: false }), { relative: true }))
+         .pipe(gulp.dest('./www'))
+         .on('end', done);
+      });
+      ```
+
+   * add `inject_templates` task in **_default task_**.
+
+      ```js
+      gulp.task('default', ['sass', 'templatecache', 'ng_annotate', 'inject_templates', 'useref']);
+      ```
+
+3. If your project have `ionic.project` file, also you need to add this to **_ionic.project_**.
+
+      ```js
+      "gulpStartupTasks": [
+        "sass",
+        "templatecache",
+        "ng_annotate",
+        "inject_templates",
+        "useref",
+        "watch"
+      ]
+      ```
+
+4. Add the following to **_index.html_** to bundle css and js as you want.
