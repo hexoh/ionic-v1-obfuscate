@@ -38,6 +38,7 @@ If you  run `ionic serve`, your gulp doesn't work. Please add the following code
    ```shell
    npm install jshint --save-dev
    npm install async --save-dev
+   npm install glob --save-dev
    ```
 
 2. Copy the following cordova hooks.
