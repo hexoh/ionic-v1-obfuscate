@@ -7,9 +7,7 @@
 var fs = require('fs');
 var path = require('path');
 
-
-var rootdir = process.argv[2];
-console.log('rootdir...' + rootdir);
+var rootDir = process.argv[2];
 
 var deleteFolderRecursive = function (removePath) {
   if (fs.existsSync(removePath)) {
@@ -25,21 +23,46 @@ var deleteFolderRecursive = function (removePath) {
   }
 };
 
+var getPlatforms = function () {
+  // go through each of the platform directories that have been prepared
+  return (process.env.CORDOVA_PLATFORMS ? process.env.CORDOVA_PLATFORMS.split(',') : []);
+};
+
+var getPlatformPath = function (platform) {
+  var wwwPath = '';
+  if (platform === 'android') {
+    wwwPath = path.join('platforms', platform, 'assets', 'www');
+    if (!fs.existsSync(wwwPath)) {
+      wwwPath = path.join(platformPath, platform, 'app', 'src', 'main', 'assets', 'www');
+    }
+  } else {
+    wwwPath = path.join('platforms', platform, 'www');
+  }
+  return wwwPath;
+};
+
 /**
  * Run romove sass from platforms
  */
 var run = function () {
-  var iosPlatformsDir = path.resolve(__dirname, '../../platforms/ios/www/lib/ionic/scss');
-  var androidPlatformsDir = path.resolve(__dirname, '../../platforms/android/assets/www/lib/ionic/scss');
+  if (rootDir) {
+    var platforms = getPlatforms();
+    platforms.forEach(function (value) {
+      try {
+        var platform = value.trim().toLowerCase();
+        var wwwPath = getPlatformPath(platform);
+        var scssPath = path.join(wwwPath, 'lib', 'ionic', 'scss');
 
-  // androidPlatformsDir not exist
-  if (!fs.existsSync(androidPlatformsDir)) {
-    // Cordova new version generation path changed
-    androidPlatformsDir = path.resolve(__dirname, '../../platforms/android/app/src/main/assets/www/lib/ionic/scss');
+        if (fs.existsSync(scssPath)) {
+          console.log('removing scss folder: ' + scssPath + '\n');
+          deleteFolderRecursive(scssPath);
+        }
+        
+      } catch (e) {
+        console.error('error: ' + e);
+      }
+    });
   }
-
-  deleteFolderRecursive(iosPlatformsDir);
-  deleteFolderRecursive(androidPlatformsDir);
 };
 
 // run remove sass
