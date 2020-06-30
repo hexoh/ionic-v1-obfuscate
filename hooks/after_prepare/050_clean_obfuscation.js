@@ -7,6 +7,8 @@
 var fs = require('fs');
 var path = require('path');
 
+var rootDir = process.argv[2];
+
 var deleteFolderRecursive = function (removePath) {
   if (fs.existsSync(removePath)) {
     fs.readdirSync(removePath).forEach(function (file, index) {
@@ -22,13 +24,25 @@ var deleteFolderRecursive = function (removePath) {
 };
 
 var run = function () {
-  var iosPlatformsDir_dist = path.resolve(__dirname, '../../platforms/ios/www/dist');
-  var androidPlatformsDir_dist = path.resolve(__dirname, '../../platforms/android/assets/www/dist');
-  if (!fs.existsSync(androidPlatformsDir_dist)) {
-    androidPlatformsDir_dist = path.resolve(__dirname, '../../platforms/android/app/src/main/assets/www/dist');
+  if (rootDir) {
+    var platforms = getPlatforms();
+    platforms.forEach(function (value) {
+      try {
+        var platform = value.trim().toLowerCase();
+        var wwwPath = getPlatformPath(platform);
+        var distPath = path.join(wwwPath, 'dist');
+
+        if (fs.existsSync(distPath)) {
+          console.log('removing dist folder: ' + distPath + '\n');
+          deleteFolderRecursive(distPath);
+        }
+
+      } catch (e) {
+        console.error('clean obfuscation error: ' + e);
+      }
+    });
   }
-  deleteFolderRecursive(iosPlatformsDir_dist);
-  deleteFolderRecursive(androidPlatformsDir_dist);
 };
 
+// clean obfuscation run
 run();
