@@ -7,6 +7,10 @@
 var fs = require('fs');
 var path = require('path');
 
+
+var rootdir = process.argv[2];
+console.log('rootdir...' + rootdir);
+
 var deleteFolderRecursive = function (removePath) {
   if (fs.existsSync(removePath)) {
     fs.readdirSync(removePath).forEach(function (file, index) {
