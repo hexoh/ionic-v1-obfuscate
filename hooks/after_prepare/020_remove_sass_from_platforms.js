@@ -57,9 +57,9 @@ var run = function () {
           console.log('removing scss folder: ' + scssPath + '\n');
           deleteFolderRecursive(scssPath);
         }
-        
+
       } catch (e) {
-        console.error('error: ' + e);
+        console.error('removing sass error: ' + e);
       }
     });
   }

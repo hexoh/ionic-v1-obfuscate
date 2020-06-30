@@ -62,7 +62,7 @@ var run = function () {
         });
 
       } catch (e) {
-        console.error('error: ' + e);
+        console.error('clean dev files error: ' + e);
       }
     });
   }
