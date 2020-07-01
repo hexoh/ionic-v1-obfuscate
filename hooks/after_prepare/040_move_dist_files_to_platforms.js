@@ -20,7 +20,7 @@ var getPlatformPath = function (platform) {
   if (platform === 'android') {
     wwwPath = path.join('platforms', platform, 'assets', 'www');
     if (!fs.existsSync(wwwPath)) {
-      wwwPath = path.join(platformPath, platform, 'app', 'src', 'main', 'assets', 'www');
+      wwwPath = path.join('platforms', platform, 'app', 'src', 'main', 'assets', 'www');
     }
   } else {
     wwwPath = path.join('platforms', platform, 'www');
@@ -41,20 +41,20 @@ var run = function () {
         var wwwPath = getPlatformPath(platform);
         var distPath = path.join(wwwPath, 'dist');
 
-        console.log('Moving dist files to ' + platform + ' platform...\n');
+        console.log('Moving dist files to ' + platform + ' platform...');
 
         toMove.forEach(function (what) {
           var from = path.join(distPath, what);
           var to = path.join(wwwPath, what);
 
-          mv(from, to, {mkdirp: true}, (function (what, from, to) {
+          mv(from, to, { mkdirp: true }, (function (what, from, to) {
             return function (err) {
               if (typeof err !== 'undefined') {
                 console.log('ERROR when moving "' + what + '" to ' + platform + ' platform');
-                console.log('\tMoving from: "' + from + '" to "' + to + '"');
+                console.log('Moving from: "' + from + '" to "' + to + '"');
                 console.log(err);
               } else {
-                console.log('\tMoved "' + what + '".');
+                console.log('Moved "' + what + '".');
               }
             };
           })(what, from, to));
