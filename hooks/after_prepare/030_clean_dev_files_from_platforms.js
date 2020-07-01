@@ -33,7 +33,7 @@ var getPlatformPath = function (platform) {
   if (platform === 'android') {
     wwwPath = path.join('platforms', platform, 'assets', 'www');
     if (!fs.existsSync(wwwPath)) {
-      wwwPath = path.join(platformPath, platform, 'app', 'src', 'main', 'assets', 'www');
+      wwwPath = path.join('platforms', platform, 'app', 'src', 'main', 'assets', 'www');
     }
   } else {
     wwwPath = path.join('platforms', platform, 'www');
@@ -53,10 +53,10 @@ var run = function () {
         var platform = value.trim().toLowerCase();
         var wwwPath = getPlatformPath(platform);
 
-        foldersToDelete.forEach(function (value) {
-          var pathToDelete = path.join(wwwPath, value);
+        foldersToDelete.forEach(function (folder) {
+          var pathToDelete = path.join(wwwPath, folder);
           if (fs.existsSync(pathToDelete)) {
-            console.log('removing "'+ folder +'" folder: ' + pathToDelete + '\n');
+            console.log('removing "' + folder + '" folder: ' + pathToDelete);
             deleteFolderRecursive(pathToDelete);
           }
         });
