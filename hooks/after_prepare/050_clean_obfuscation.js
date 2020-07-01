@@ -23,6 +23,24 @@ var deleteFolderRecursive = function (removePath) {
   }
 };
 
+var getPlatforms = function () {
+  // go through each of the platform directories that have been prepared
+  return (process.env.CORDOVA_PLATFORMS ? process.env.CORDOVA_PLATFORMS.split(',') : []);
+};
+
+var getPlatformPath = function (platform) {
+  var wwwPath = '';
+  if (platform === 'android') {
+    wwwPath = path.join('platforms', platform, 'assets', 'www');
+    if (!fs.existsSync(wwwPath)) {
+      wwwPath = path.join('platforms', platform, 'app', 'src', 'main', 'assets', 'www');
+    }
+  } else {
+    wwwPath = path.join('platforms', platform, 'www');
+  }
+  return wwwPath;
+};
+
 var run = function () {
   if (rootDir) {
     var platforms = getPlatforms();
@@ -33,7 +51,7 @@ var run = function () {
         var distPath = path.join(wwwPath, 'dist');
 
         if (fs.existsSync(distPath)) {
-          console.log('removing dist folder: ' + distPath + '\n');
+          console.log('removing dist folder: ' + distPath);
           deleteFolderRecursive(distPath);
         }
 
