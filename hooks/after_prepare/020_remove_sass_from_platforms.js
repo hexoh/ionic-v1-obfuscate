@@ -33,7 +33,7 @@ var getPlatformPath = function (platform) {
   if (platform === 'android') {
     wwwPath = path.join('platforms', platform, 'assets', 'www');
     if (!fs.existsSync(wwwPath)) {
-      wwwPath = path.join(platformPath, platform, 'app', 'src', 'main', 'assets', 'www');
+      wwwPath = path.join('platforms', platform, 'app', 'src', 'main', 'assets', 'www');
     }
   } else {
     wwwPath = path.join('platforms', platform, 'www');
@@ -54,7 +54,7 @@ var run = function () {
         var scssPath = path.join(wwwPath, 'lib', 'ionic', 'scss');
 
         if (fs.existsSync(scssPath)) {
-          console.log('removing scss folder: ' + scssPath + '\n');
+          console.log('removing scss folder: ' + scssPath);
           deleteFolderRecursive(scssPath);
         }
 
