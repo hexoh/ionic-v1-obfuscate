@@ -7,6 +7,8 @@ English | [简体中文](./README.zh-CN.md)
 
 ## The Ionic1 framework project minification and obfuscation
 
+**This article does not support Cordova 10 version, because Cordova10 deleted the hooks folder.**
+
 We will minified and obfuscated our project in the following steps:
 
 * (**cordova hook**) **`Lint your javascript`** (this step is needed because before minifying and obfuscating we need to ensure that there are no javascript errors)
